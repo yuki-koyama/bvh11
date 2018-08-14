@@ -3,3 +3,9 @@ project(bvh11 CXX)
 set(CMAKE_CXX_STANDARD 11)
 file(GLOB headers ${CMAKE_SOURCE_DIR}/bvh11/*.hpp)
 install(FILES ${headers} DESTINATION include/bvh11)
+
+option(BVH11_BUILD_DEMOS "Build demos" OFF)
+
+if(BVH11_BUILD_DEMOS)
+	add_subdirectory(demos/simple_demo)
+endif()
