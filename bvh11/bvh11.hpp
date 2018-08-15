@@ -4,19 +4,32 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <fstream>
+#include <regex>
 #include <Eigen/Core>
 #include "Joint.hpp"
 #include "Channel.hpp"
 
 namespace bvh11
 {
+    inline std::vector<std::string> split(const std::string& sequence, const std::string& pattern)
+    {
+        const std::regex regex(pattern);
+        const std::sregex_token_iterator first{ sequence.begin(), sequence.end(), regex, -1 };
+        const std::sregex_token_iterator last {};
+        return std::vector<std::string>{ first->str().empty() ? std::next(first) : first, last };
+    }
+    
     class BvhObject
     {
     public:
-        BvhObject(const std::string& file_path) {}
+        BvhObject(const std::string& file_path)
+        {
+            ReadBvhFile(file_path);
+        }
         
-        const int& frames() const { return frames_; }
-        const double& frame_time() const { return frame_time_; }
+        int    frames()     const { return frames_;     }
+        double frame_time() const { return frame_time_; }
         
     private:
         int                    frames_;
@@ -24,6 +37,16 @@ namespace bvh11
         std::vector<Channel>   channels_;
         Eigen::MatrixXd        motion_;
         std::shared_ptr<Joint> root_joint_;
+        
+        void ReadBvhFile(const std::string& file_path)
+        {
+            std::ifstream ifs(file_path);
+            std::string line;
+            while (std::getline(ifs, line))
+            {
+                const std::vector<std::string> tokens = split(line, R"([\t\s]+)");
+            }
+        }
     };
 }
 
