@@ -6,6 +6,7 @@
 #include <memory>
 #include <fstream>
 #include <regex>
+#include <cassert>
 #include <Eigen/Core>
 #include "Joint.hpp"
 #include "Channel.hpp"
@@ -40,10 +41,15 @@ namespace bvh11
         
         void ReadBvhFile(const std::string& file_path)
         {
+            // Open the input file
             std::ifstream ifs(file_path);
+            assert(ifs.is_open() && "Failed to open the input file.");
+            
+            // Read the file line by line
             std::string line;
             while (std::getline(ifs, line))
             {
+                // Split the line into tokens
                 const std::vector<std::string> tokens = split(line, R"([\t\s]+)");
             }
         }
