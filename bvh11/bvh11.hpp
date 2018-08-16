@@ -75,106 +75,120 @@ namespace bvh11
             std::ifstream ifs(file_path);
             assert(ifs.is_open() && "Failed to open the input file.");
             
-            // Read the file line by line
-            std::string line;
-            std::vector<std::shared_ptr<Joint>> stack;
-            while (std::getline(ifs, line))
+            // Read the HIERARCHY part
+            [&]() -> void
             {
-                // Split the line into tokens
-                const std::vector<std::string> tokens = internal::split(line, R"([\t\s]+)");
-                
-                // Ignore empty lines
-                if (tokens.empty())
+                std::string line;
+                std::vector<std::shared_ptr<Joint>> stack;
+                while (std::getline(ifs, line))
                 {
-                    continue;
-                }
-                // Start to create a new joint
-                else if (tokens[0] == "ROOT" || tokens[0] == "JOINT")
-                {
-                    assert(tokens.size() == 2 && "Failed to find a joint name");
+                    // Split the line into tokens
+                    const std::vector<std::string> tokens = internal::split(line, R"([\t\s]+)");
                     
-                    const std::string& joint_name = tokens[1];
-                    
-#ifdef BVH11_VERBOSE
-                    for (int i = 0; i < stack.size(); ++ i) { std::cout << "  "; }
-                    std::cout << joint_name << std::endl;
-#endif
-                    
-                    const std::shared_ptr<Joint> parent = stack.empty() ? nullptr : stack.back();
-                    
-                    std::shared_ptr<Joint> new_joint = std::make_shared<Joint>(joint_name, parent);
-                    
-                    if (parent) { parent->AddChild(new_joint); }
-                    
-                    stack.push_back(new_joint);
-                    
-                    // Read the next line, which should be "{"
-                    const std::vector<std::string> tokens_begin_block = internal::tokenize_next_line(ifs);
-                    assert(tokens_begin_block.size() == 1 && "Found two or more tokens");
-                    assert(tokens_begin_block[0] == "{" && "Could not find an expected '{'");
-                }
-                // Read an offset value
-                else if (tokens[0] == "OFFSET")
-                {
-                    assert(tokens.size() == 4);
-                    const std::shared_ptr<Joint> current_joint = stack.back();
-                    current_joint->offset() = internal::read_offset(tokens);
-                }
-                // Read a channel list
-                else if (tokens[0] == "CHANNELS")
-                {
-                    assert(tokens.size() >= 2);
-                    const int num_channels = std::stoi(tokens[1]);
-
-                    assert(tokens.size() == num_channels + 2);
-                    for (int i = 0; i < num_channels; ++ i)
+                    // Ignore empty lines
+                    if (tokens.empty())
                     {
-                        const std::shared_ptr<Joint> target_joint = stack.back();
-                        const Channel::Type type = [](const std::string& channel_type)
+                        continue;
+                    }
+                    // Ignore a declaration of hierarchy section
+                    else if (tokens[0] == "HIERARCHY")
+                    {
+                        continue;
+                    }
+                    // Start to create a new joint
+                    else if (tokens[0] == "ROOT" || tokens[0] == "JOINT")
+                    {
+                        assert(tokens.size() == 2 && "Failed to find a joint name");
+                        
+                        const std::string& joint_name = tokens[1];
+                        
+#ifdef BVH11_VERBOSE
+                        for (int i = 0; i < stack.size(); ++ i) { std::cout << "  "; }
+                        std::cout << joint_name << std::endl;
+#endif
+                        
+                        const std::shared_ptr<Joint> parent = stack.empty() ? nullptr : stack.back();
+                        
+                        std::shared_ptr<Joint> new_joint = std::make_shared<Joint>(joint_name, parent);
+                        
+                        if (parent) { parent->AddChild(new_joint); }
+                        
+                        stack.push_back(new_joint);
+                        
+                        // Read the next line, which should be "{"
+                        const std::vector<std::string> tokens_begin_block = internal::tokenize_next_line(ifs);
+                        assert(tokens_begin_block.size() == 1 && "Found two or more tokens");
+                        assert(tokens_begin_block[0] == "{" && "Could not find an expected '{'");
+                    }
+                    // Read an offset value
+                    else if (tokens[0] == "OFFSET")
+                    {
+                        assert(tokens.size() == 4);
+                        const std::shared_ptr<Joint> current_joint = stack.back();
+                        current_joint->offset() = internal::read_offset(tokens);
+                    }
+                    // Read a channel list
+                    else if (tokens[0] == "CHANNELS")
+                    {
+                        assert(tokens.size() >= 2);
+                        const int num_channels = std::stoi(tokens[1]);
+                        
+                        assert(tokens.size() == num_channels + 2);
+                        for (int i = 0; i < num_channels; ++ i)
                         {
-                            if (channel_type == "Xposition") { return Channel::Type::x_position; }
-                            if (channel_type == "Yposition") { return Channel::Type::y_position; }
-                            if (channel_type == "Zposition") { return Channel::Type::z_position; }
-                            if (channel_type == "Zrotation") { return Channel::Type::z_rotation; }
-                            if (channel_type == "Xrotation") { return Channel::Type::x_rotation; }
-                            if (channel_type == "Yrotation") { return Channel::Type::y_rotation; }
+                            const std::shared_ptr<Joint> target_joint = stack.back();
+                            const Channel::Type type = [](const std::string& channel_type)
+                            {
+                                if (channel_type == "Xposition") { return Channel::Type::x_position; }
+                                if (channel_type == "Yposition") { return Channel::Type::y_position; }
+                                if (channel_type == "Zposition") { return Channel::Type::z_position; }
+                                if (channel_type == "Zrotation") { return Channel::Type::z_rotation; }
+                                if (channel_type == "Xrotation") { return Channel::Type::x_rotation; }
+                                if (channel_type == "Yrotation") { return Channel::Type::y_rotation; }
+                                
+                                assert(false && "Could not find a valid channel type");
+                                return Channel::Type();
+                            }(tokens[i + 2]);
                             
-                            assert(false && "Could not find a valid channel type");
-                            return Channel::Type();
-                        }(tokens[i + 2]);
-
-                        channels_.push_back(Channel(type, target_joint));
+                            channels_.push_back(Channel(type, target_joint));
+                        }
+                    }
+                    // Read an end site
+                    else if (tokens[0] == "End")
+                    {
+                        assert(tokens.size() == 2 && tokens[1] == "Site");
+                        
+                        const std::shared_ptr<Joint> current_joint = stack.back();
+                        current_joint->has_end_site() = true;
+                        
+                        // Read the next line, which should be "{"
+                        const std::vector<std::string> tokens_begin_block = internal::tokenize_next_line(ifs);
+                        assert(tokens_begin_block.size() == 1 && "Found two or more tokens");
+                        assert(tokens_begin_block[0] == "{" && "Could not find an expected '{'");
+                        
+                        // Read the next line, which should state an offset
+                        const std::vector<std::string> tokens_offset = internal::tokenize_next_line(ifs);
+                        current_joint->end_site() = internal::read_offset(tokens_offset);
+                        
+                        // Read the next line, which should be "{"
+                        const std::vector<std::string> tokens_end_block = internal::tokenize_next_line(ifs);
+                        assert(tokens_end_block.size() == 1 && "Found two or more tokens");
+                        assert(tokens_end_block[0] == "}" && "Could not find an expected '}'");
+                    }
+                    // Finish to create a joint
+                    else if (tokens[0] == "}")
+                    {
+                        assert(!stack.empty());
+                        stack.pop_back();
+                    }
+                    // Stop this iteration and go to the motion section
+                    else if (tokens[0] == "MOTION")
+                    {
+                        return;
                     }
                 }
-                // Read an end site
-                else if (tokens[0] == "End")
-                {
-                    assert(tokens.size() == 2 && tokens[1] == "Site");
-                    
-                    const std::shared_ptr<Joint> current_joint = stack.back();
-                    current_joint->has_end_site() = true;
-                    
-                    // Read the next line, which should be "{"
-                    const std::vector<std::string> tokens_begin_block = internal::tokenize_next_line(ifs);
-                    assert(tokens_begin_block.size() == 1 && "Found two or more tokens");
-                    assert(tokens_begin_block[0] == "{" && "Could not find an expected '{'");
-                    
-                    // Read the next line, which should state an offset
-                    const std::vector<std::string> tokens_offset = internal::tokenize_next_line(ifs);
-                    current_joint->end_site() = internal::read_offset(tokens_offset);
-                    
-                    // Read the next line, which should be "{"
-                    const std::vector<std::string> tokens_end_block = internal::tokenize_next_line(ifs);
-                    assert(tokens_end_block.size() == 1 && "Found two or more tokens");
-                    assert(tokens_end_block[0] == "}" && "Could not find an expected '}'");
-                }
-                // Finish to create a joint
-                else if (tokens[0] == "}")
-                {
-                    assert(!stack.empty());
-                    stack.pop_back();
-                }
-            }
+                assert(false && "Could not find the MOTION part");
+            }();
         }
     };
 }
