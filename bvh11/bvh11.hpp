@@ -120,6 +120,32 @@ namespace bvh11
                     const std::shared_ptr<Joint> current_joint = stack.back();
                     current_joint->offset() = internal::read_offset(tokens);
                 }
+                // Read a channel list
+                else if (tokens[0] == "CHANNELS")
+                {
+                    assert(tokens.size() >= 2);
+                    const int num_channels = std::stoi(tokens[1]);
+
+                    assert(tokens.size() == num_channels + 2);
+                    for (int i = 0; i < num_channels; ++ i)
+                    {
+                        const std::shared_ptr<Joint> target_joint = stack.back();
+                        const Channel::Type type = [](const std::string& channel_type)
+                        {
+                            if (channel_type == "Xposition") { return Channel::Type::x_position; }
+                            if (channel_type == "Yposition") { return Channel::Type::y_position; }
+                            if (channel_type == "Zposition") { return Channel::Type::z_position; }
+                            if (channel_type == "Zrotation") { return Channel::Type::z_rotation; }
+                            if (channel_type == "Xrotation") { return Channel::Type::x_rotation; }
+                            if (channel_type == "Yrotation") { return Channel::Type::y_rotation; }
+                            
+                            assert(false && "Could not find a valid channel type");
+                            return Channel::Type();
+                        }(tokens[i + 2]);
+
+                        channels_.push_back(Channel(type, target_joint));
+                    }
+                }
                 // Read an end site
                 else if (tokens[0] == "End")
                 {
