@@ -11,7 +11,16 @@ namespace bvh11
     class Joint
     {
     public:
-        Joint(const std::string& name, const Eigen::Vector3d& offset) : name_(name), offset_(offset) {}
+        Joint(const std::string& name, std::shared_ptr<Joint> parent) : name_(name), parent_(parent) {}
+        
+        const Eigen::Vector3d& offset() const { return offset_; }
+        Eigen::Vector3d& offset() { return offset_; }
+        
+        bool has_end_site() const { return has_end_site_; }
+        bool& has_end_site() { return has_end_site_; }
+        
+        const Eigen::Vector3d& end_site() const { return end_site_; }
+        Eigen::Vector3d& end_site() { return end_site_; }
         
         void AddChild(std::shared_ptr<Joint> child)
         {
@@ -19,9 +28,12 @@ namespace bvh11
         }
         
     private:
-        const std::string name_;
-        const Eigen::Vector3d offset_;
+        const std::string            name_;
+        const std::shared_ptr<Joint> parent_;
         
+        bool                              has_end_site_ = false;
+        Eigen::Vector3d                   end_site_;
+        Eigen::Vector3d                   offset_;
         std::list<std::shared_ptr<Joint>> children_;
     };
 }
