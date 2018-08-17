@@ -73,6 +73,7 @@ namespace bvh11
                     {
                         assert(tokens.size() == 2 && "Failed to find a joint name");
                         
+                        // Read the joint name
                         const std::string& joint_name = tokens[1];
                         
 #ifdef BVH11_VERBOSE
@@ -80,12 +81,16 @@ namespace bvh11
                         std::cout << joint_name << std::endl;
 #endif
                         
+                        // Get a pointer for the parent if this is not a root joint
                         const std::shared_ptr<Joint> parent = stack.empty() ? nullptr : stack.back();
                         
+                        // Instantiate a new joint
                         std::shared_ptr<Joint> new_joint = std::make_shared<Joint>(joint_name, parent);
                         
+                        // Register it to the parent's children list
                         if (parent) { parent->AddChild(new_joint); }
                         
+                        // Add the new joint to the stack
                         stack.push_back(new_joint);
                         
                         // Read the next line, which should be "{"
