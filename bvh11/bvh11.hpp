@@ -62,11 +62,18 @@ namespace bvh11
         int    frames()     const { return frames_;     }
         double frame_time() const { return frame_time_; }
         
+        const std::vector<Channel>& channels() const { return channels_; }
+        const Eigen::MatrixXd&      motion()   const { return motion_;   }
+        
+        std::shared_ptr<Joint> root_joint() const { return root_joint_; }
+        
     private:
         int                    frames_;
         double                 frame_time_;
+        
         std::vector<Channel>   channels_;
         Eigen::MatrixXd        motion_;
+        
         std::shared_ptr<Joint> root_joint_;
         
         void ReadBvhFile(const std::string& file_path)
