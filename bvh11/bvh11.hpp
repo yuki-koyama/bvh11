@@ -89,6 +89,7 @@ namespace bvh11
                         
                         // Register it to the parent's children list
                         if (parent) { parent->AddChild(new_joint); }
+                        else { root_joint_ = new_joint; }
                         
                         // Add the new joint to the stack
                         stack.push_back(new_joint);
