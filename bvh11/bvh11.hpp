@@ -204,6 +204,21 @@ namespace bvh11
                 assert(tokens_frame_time.size() == 3);
                 assert(tokens_frame_time[0] == "Frame" && tokens_frame_time[1] == "Time:");
                 frame_time_ = std::stod(tokens_frame_time[2]);
+                
+                // Allocate memory for storing motion data
+                motion_.resize(frames_, channels_.size());
+                
+                // Read each frame
+                for (int frame_index = 0; frame_index < frames_; ++ frame_index)
+                {
+                    const std::vector<std::string> tokens = internal::tokenize_next_line(ifs);
+                    assert(tokens.size() == channels_.size() && "Found invalid motion data");
+                    
+                    for (int channel_index = 0; channel_index < channels_.size(); ++ channel_index)
+                    {
+                        motion_(frame_index, channel_index) = std::stod(tokens[channel_index]);
+                    }
+                }
             }();
         }
     };
