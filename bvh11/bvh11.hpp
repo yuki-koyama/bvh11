@@ -189,6 +189,22 @@ namespace bvh11
                 }
                 assert(false && "Could not find the MOTION part");
             }();
+            
+            // Read the MOTION part
+            [&]() -> void
+            {
+                // Read the number of frames
+                const std::vector<std::string> tokens_frames = internal::tokenize_next_line(ifs);
+                assert(tokens_frames.size() == 2);
+                assert(tokens_frames[0] == "Frames:");
+                frames_ = std::stoi(tokens_frames[1]);
+                
+                // Read the frame time
+                const std::vector<std::string> tokens_frame_time = internal::tokenize_next_line(ifs);
+                assert(tokens_frame_time.size() == 3);
+                assert(tokens_frame_time[0] == "Frame" && tokens_frame_time[1] == "Time:");
+                frame_time_ = std::stod(tokens_frame_time[2]);
+            }();
         }
     };
 }
