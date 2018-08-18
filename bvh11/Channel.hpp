@@ -16,14 +16,14 @@ namespace bvh11
             z_rotation, x_rotation, y_rotation
         };
         
-        Channel(Type type, std::shared_ptr<Joint> target_joint) {}
+        Channel(Type type, std::shared_ptr<Joint> target_joint) : type_(type), target_joint_(target_joint) {}
         
         const Type& type() const { return type_; }
         std::shared_ptr<Joint> target_joint() const { return target_joint_; }
         
     private:
-        Type type_;
-        std::shared_ptr<Joint> target_joint_;
+        const Type type_;
+        const std::shared_ptr<Joint> target_joint_;
     };
 }
 
