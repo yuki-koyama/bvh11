@@ -11,5 +11,8 @@ if(BVH11_BUILD_DEMOS)
 	find_package(Eigen3 REQUIRED)
 	include_directories(${EIGEN3_INCLUDE_DIR})
 
+	set(RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/sample.bvh)
+	file(COPY ${RESOURCE_FILES} DESTINATION ${CMAKE_BINARY_DIR})
+
 	add_subdirectory(demos/simple_demo)
 endif()
