@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.1)
 project(bvh11 CXX)
 set(CMAKE_CXX_STANDARD 11)
-file(GLOB headers ${CMAKE_SOURCE_DIR}/bvh11/*.hpp)
-install(FILES ${headers} DESTINATION include/bvh11)
+
+file(GLOB HEADERS ${CMAKE_SOURCE_DIR}/bvh11/*.hpp)
+install(FILES ${HEADERS} DESTINATION include/bvh11)
 
 option(BVH11_BUILD_DEMOS "Build demos" OFF)
 
