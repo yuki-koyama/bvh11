@@ -2,7 +2,12 @@ cmake_minimum_required(VERSION 3.1)
 project(bvh11 CXX)
 set(CMAKE_CXX_STANDARD 11)
 
-file(GLOB HEADERS ${CMAKE_SOURCE_DIR}/bvh11/*.hpp)
+file(GLOB HEADERS ${CMAKE_SOURCE_DIR}/include/bvh11/*.hpp)
+
+add_library(bvh11 INTERFACE)
+target_sources(bvh11 INTERFACE ${HEADERS})
+target_include_directories(bvh11 INTERFACE ${CMAKE_SOURCE_DIR}/include)
+
 install(FILES ${HEADERS} DESTINATION include/bvh11)
 
 option(BVH11_BUILD_DEMOS "Build demos" OFF)
