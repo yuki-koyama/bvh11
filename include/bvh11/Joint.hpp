@@ -26,6 +26,8 @@ namespace bvh11
         
         const std::list<std::shared_ptr<Joint>>& children() const { return children_; }
         
+        std::shared_ptr<Joint> parent() const { return parent_; }
+        
         void AddChild(std::shared_ptr<Joint> child)
         {
             children_.push_back(child);

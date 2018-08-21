@@ -10,10 +10,12 @@ int main(int argc, char* argv[])
     }
     
     bvh11::BvhObject bvh(argv[1]);
-
-    std::cout << "#Channels  : " << bvh.channels().size() << std::endl;
-    std::cout << "#Frames    : " << bvh.frames()          << std::endl;
-    std::cout << "Frame time : " << bvh.frame_time()      << std::endl;
+    
+    std::cout << "#Channels       : " << bvh.channels().size() << std::endl;
+    std::cout << "#Frames         : " << bvh.frames()          << std::endl;
+    std::cout << "Frame time      : " << bvh.frame_time()      << std::endl;
+    std::cout << "Joint hierarchy : " << std::endl;
+    bvh.PrintJointHierarchy();
     
     return 0;
 }

@@ -5,15 +5,12 @@
 #include <string>
 #include <memory>
 #include <fstream>
+#include <iostream>
 #include <cassert>
 #include <Eigen/Core>
 #include "Joint.hpp"
 #include "Channel.hpp"
 #include "internal_functions.hpp"
-
-#ifdef BVH11_VERBOSE
-#include <iostream>
-#endif
 
 namespace bvh11
 {
@@ -32,6 +29,8 @@ namespace bvh11
         const Eigen::MatrixXd&      motion()   const { return motion_;   }
         
         std::shared_ptr<Joint> root_joint() const { return root_joint_; }
+        
+        void PrintJointHierarchy() const { PrintJointSubHierarchy(root_joint_, 0); }
         
     private:
         int                    frames_;
@@ -75,11 +74,6 @@ namespace bvh11
                         
                         // Read the joint name
                         const std::string& joint_name = tokens[1];
-                        
-#ifdef BVH11_VERBOSE
-                        for (int i = 0; i < stack.size(); ++ i) { std::cout << "  "; }
-                        std::cout << joint_name << std::endl;
-#endif
                         
                         // Get a pointer for the parent if this is not a root joint
                         const std::shared_ptr<Joint> parent = stack.empty() ? nullptr : stack.back();
@@ -199,6 +193,14 @@ namespace bvh11
                     }
                 }
             }();
+        }
+        
+        void PrintJointSubHierarchy(std::shared_ptr<Joint> joint, int depth) const
+        {
+            for (int i = 0; i < depth; ++ i) { std::cout << "  "; }
+            std::cout << joint->name() << std::endl;
+            
+            for (auto child : joint->children()) { PrintJointSubHierarchy(child, depth + 1); }
         }
     };
 }
