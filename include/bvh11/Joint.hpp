@@ -22,6 +22,10 @@ namespace bvh11
         const Eigen::Vector3d& end_site() const { return end_site_; }
         Eigen::Vector3d& end_site() { return end_site_; }
         
+        const std::string& name() const { return name_; }
+        
+        const std::list<std::shared_ptr<Joint>>& children() const { return children_; }
+        
         void AddChild(std::shared_ptr<Joint> child)
         {
             children_.push_back(child);
