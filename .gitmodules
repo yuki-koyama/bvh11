@@ -1,0 +1,3 @@
+[submodule "external/three-dim-util"]
+	path = external/three-dim-util
+	url = https://github.com/yuki-koyama/three-dim-util.git
