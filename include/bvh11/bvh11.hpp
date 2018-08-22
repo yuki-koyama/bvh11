@@ -30,6 +30,18 @@ namespace bvh11
         
         std::shared_ptr<Joint> root_joint() const { return root_joint_; }
         
+        std::vector<std::shared_ptr<Joint>> GetJointList() const
+        {
+            std::vector<std::shared_ptr<Joint>> joint_list;
+            std::function<void(std::shared_ptr<Joint>)> add_joint = [&](std::shared_ptr<Joint> joint)
+            {
+                joint_list.push_back(joint);
+                for (auto child : joint->children()) { add_joint(child); }
+            };
+            add_joint(root_joint_);
+            return joint_list;
+        }
+        
         void PrintJointHierarchy() const { PrintJointSubHierarchy(root_joint_, 0); }
         
     private:
