@@ -1,22 +1,7 @@
 #include <iostream>
 #include <bvh11/bvh11.hpp>
-#include <three-dim-util/trackball-widget.hpp>
 #include <QApplication>
-
-class Widget : public threedimutil::TrackballWidget
-{
-public:
-    Widget(QWidget *parent = nullptr) : threedimutil::TrackballWidget(parent) {}
-    
-protected:
-    void paintGL()
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-        setProjectionMatrix();
-        setModelViewMatrix();
-    }
-};
+#include "Widget.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -26,10 +11,12 @@ int main(int argc, char* argv[])
         exit(1);
     }
     
+    // Instantiate a BVH object
     bvh11::BvhObject bvh(argv[1]);
     
+    // Instantiate a widget for visualizing BVH object
     QApplication app(argc, argv);
-    Widget widget;
+    Widget widget(bvh);
     widget.show();
     return app.exec();
 }
