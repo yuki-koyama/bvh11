@@ -19,6 +19,7 @@ if(BVH11_BUILD_DEMOS)
 	set(RESOURCE_FILES ${CMAKE_SOURCE_DIR}/resources/sample.bvh)
 	file(COPY ${RESOURCE_FILES} DESTINATION ${CMAKE_BINARY_DIR})
 
+	set(THREEDIMUTIL_BUILD_DEMOS OFF CACHE INTERNAL "" FORCE)
 	add_subdirectory(external/three-dim-util)
 
 	add_subdirectory(demos/simple_demo)
