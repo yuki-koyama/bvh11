@@ -8,6 +8,7 @@ bvh_(bvh)
 {
     camera().position() = Eigen::Vector3d(50.0, 50.0, 50.0);
     camera().target()   = Eigen::Vector3d( 0.0, 10.0,  0.0);
+    camera().up()       = Eigen::Vector3d( 0.0,  1.0,  0.0);
     
     near_clip() = 1.0;
     far_clip()  = 500.0;
@@ -35,10 +36,10 @@ void Widget::paintGL()
 void Widget::advance()
 {
     const auto current_time_point = std::chrono::steady_clock::now();
-    const auto elapsed_duration = std::chrono::duration_cast<std::chrono::milliseconds>(current_time_point - time_point_);
-
+    const auto elapsed_duration   = std::chrono::duration_cast<std::chrono::milliseconds>(current_time_point - time_point_);
+    
     frame_ = static_cast<int>((static_cast<double>(elapsed_duration.count()) / 1000.0) / bvh_.frame_time()) % bvh_.frames();
-
+    
     update();
 }
 
