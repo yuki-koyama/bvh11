@@ -7,8 +7,8 @@ Widget::Widget(const bvh11::BvhObject& bvh, QWidget *parent) :
 threedimutil::TrackballWidget(parent),
 bvh_(bvh)
 {
-    camera().position() = Eigen::Vector3d(50.0, 50.0, 50.0);
-    camera().target()   = Eigen::Vector3d( 0.0, 10.0,  0.0);
+    camera().position() = Eigen::Vector3d(50.0, 10.0, 80.0);
+    camera().target()   = Eigen::Vector3d( 0.0, 20.0,  0.0);
     camera().up()       = Eigen::Vector3d( 0.0,  1.0,  0.0);
     
     near_clip() = 1.0;
@@ -28,10 +28,12 @@ void Widget::paintGL()
     setProjectionMatrix();
     setModelViewMatrix();
     
+    glPushMatrix();
+    glScaled(5.0, 1.0, 5.0);
     igl::opengl2::draw_floor();
+    glPopMatrix();
     
     glColor3d(0.5, 0.1, 0.1);
-    
     drawJointSubHierarchy(frame_, bvh_.root_joint());
 }
 
@@ -41,6 +43,8 @@ void Widget::advance()
     const auto elapsed_duration   = std::chrono::duration_cast<std::chrono::milliseconds>(current_time_point - time_point_);
     
     frame_ = static_cast<int>((static_cast<double>(elapsed_duration.count()) / 1000.0) / bvh_.frame_time()) % bvh_.frames();
+    
+    camera().RotateAroundTarget(1e-03);
     
     update();
 }
