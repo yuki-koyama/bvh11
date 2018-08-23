@@ -28,13 +28,13 @@ namespace bvh11
         const std::vector<Channel>& channels() const { return channels_; }
         const Eigen::MatrixXd&      motion()   const { return motion_;   }
         
-        std::shared_ptr<Joint> root_joint() const { return root_joint_; }
+        std::shared_ptr<const Joint> root_joint() const { return root_joint_; }
         
         // This method returns a list of joints always in the same order
-        std::vector<std::shared_ptr<Joint>> GetJointList() const
+        std::vector<std::shared_ptr<const Joint>> GetJointList() const
         {
-            std::vector<std::shared_ptr<Joint>> joint_list;
-            std::function<void(std::shared_ptr<Joint>)> add_joint = [&](std::shared_ptr<Joint> joint)
+            std::vector<std::shared_ptr<const Joint>> joint_list;
+            std::function<void(std::shared_ptr<const Joint>)> add_joint = [&](std::shared_ptr<const Joint> joint)
             {
                 joint_list.push_back(joint);
                 for (auto child : joint->children()) { add_joint(child); }
@@ -52,7 +52,7 @@ namespace bvh11
         std::vector<Channel>   channels_;
         Eigen::MatrixXd        motion_;
         
-        std::shared_ptr<Joint> root_joint_;
+        std::shared_ptr<const Joint> root_joint_;
         
         void ReadBvhFile(const std::string& file_path)
         {
@@ -211,7 +211,7 @@ namespace bvh11
             }();
         }
         
-        void PrintJointSubHierarchy(std::shared_ptr<Joint> joint, int depth) const
+        void PrintJointSubHierarchy(std::shared_ptr<const Joint> joint, int depth) const
         {
             for (int i = 0; i < depth; ++ i) { std::cout << "  "; }
             std::cout << joint->name() << std::endl;
