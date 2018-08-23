@@ -2,10 +2,14 @@
 
 A tiny C++11 library for reading BVH motion capture data.
 
-## Dependency
+## Dependencies
 
 - C++11 standard library
-- Eigen
+- Eigen <http://eigen.tuxfamily.org/>
+
+### Additional Dependencies for Demos
+
+- three-dim-util <https://github.com/yuki-koyama/three-dim-util/>
 
 ## Usage
 
