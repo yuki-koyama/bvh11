@@ -30,6 +30,7 @@ namespace bvh11
         
         std::shared_ptr<Joint> root_joint() const { return root_joint_; }
         
+        // This method returns a list of joints always in the same order
         std::vector<std::shared_ptr<Joint>> GetJointList() const
         {
             std::vector<std::shared_ptr<Joint>> joint_list;
@@ -136,6 +137,9 @@ namespace bvh11
                             }(tokens[i + 2]);
                             
                             channels_.push_back(Channel(type, target_joint));
+                            
+                            const int channel_index = channels_.size() - 1;
+                            target_joint->AssociateChannel(channel_index);
                         }
                     }
                     // Read an end site

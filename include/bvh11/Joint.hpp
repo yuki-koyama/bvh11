@@ -25,13 +25,12 @@ namespace bvh11
         const std::string& name() const { return name_; }
         
         const std::list<std::shared_ptr<Joint>>& children() const { return children_; }
+        const std::list<int>& associated_channels_indices() const { return associated_channels_indices_; }
         
         std::shared_ptr<Joint> parent() const { return parent_; }
         
-        void AddChild(std::shared_ptr<Joint> child)
-        {
-            children_.push_back(child);
-        }
+        void AddChild(std::shared_ptr<Joint> child) { children_.push_back(child); }
+        void AssociateChannel(int channel_index) { associated_channels_indices_.push_back(channel_index); }
         
     private:
         const std::string            name_;
@@ -41,6 +40,7 @@ namespace bvh11
         Eigen::Vector3d                   end_site_;
         Eigen::Vector3d                   offset_;
         std::list<std::shared_ptr<Joint>> children_;
+        std::list<int>                    associated_channels_indices_;
     };
 }
 
