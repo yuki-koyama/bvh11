@@ -1,6 +1,7 @@
 #include "Widget.hpp"
 #include <three-dim-util/gl-wrapper.hpp>
 #include <three-dim-util/draw-functions.hpp>
+#include <igl/opengl2/draw_floor.h>
 
 Widget::Widget(const bvh11::BvhObject& bvh, QWidget *parent) :
 threedimutil::TrackballWidget(parent),
@@ -26,6 +27,8 @@ void Widget::paintGL()
     
     setProjectionMatrix();
     setModelViewMatrix();
+    
+    igl::opengl2::draw_floor();
     
     glPointSize(8.0);
     glColor3d(0.5, 0.1, 0.1);
