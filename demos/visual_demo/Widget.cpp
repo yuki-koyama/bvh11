@@ -30,7 +30,6 @@ void Widget::paintGL()
     
     igl::opengl2::draw_floor();
     
-    glPointSize(8.0);
     glColor3d(0.5, 0.1, 0.1);
     
     drawJointSubHierarchy(frame_, bvh_.root_joint());
