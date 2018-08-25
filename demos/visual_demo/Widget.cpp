@@ -3,6 +3,8 @@
 #include <three-dim-util/draw-functions.hpp>
 #include <igl/opengl2/draw_floor.h>
 
+#include <three-dim-util/glut-wrapper.hpp>
+
 Widget::Widget(const bvh11::BvhObject& bvh, QWidget *parent) :
 threedimutil::TrackballWidget(parent),
 bvh_(bvh)
@@ -83,9 +85,11 @@ void Widget::drawJointSubHierarchy(int frame, std::shared_ptr<const bvh11::Joint
         }
     }
     
-    threedimutil::draw_point_with_border(Eigen::Vector3d::Zero());
-    
-    for (auto child : joint->children()) { drawJointSubHierarchy(frame, child); }
+    for (auto child : joint->children())
+    {
+        threedimutil::draw_cylinder(0.5, Eigen::Vector3d::Zero(), child->offset());
+        drawJointSubHierarchy(frame, child);
+    }
     
     glPopMatrix();
 }
