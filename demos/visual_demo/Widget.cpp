@@ -83,7 +83,7 @@ void Widget::drawJointSubHierarchy(int frame, std::shared_ptr<const bvh11::Joint
         }
     }
     
-    threedimutil::draw_point(Eigen::Vector3d::Zero());
+    threedimutil::draw_point_with_border(Eigen::Vector3d::Zero());
     
     for (auto child : joint->children()) { drawJointSubHierarchy(frame, child); }
     
