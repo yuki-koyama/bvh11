@@ -28,12 +28,18 @@ void Widget::paintGL()
     setProjectionMatrix();
     setModelViewMatrix();
     
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    
+    glLightfv(GL_LIGHT0, GL_POSITION, std::vector<GLfloat>{ + 1.0, 2.0, + 3.0, 0.0 }.data());
+    
     glPushMatrix();
     glScaled(5.0, 1.0, 5.0);
     igl::opengl2::draw_floor();
     glPopMatrix();
     
-    glColor3d(0.5, 0.1, 0.1);
+    glColor3d(0.7, 0.2, 0.2);
     drawJointSubHierarchy(frame_, bvh_.root_joint());
 }
 
