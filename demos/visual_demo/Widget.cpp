@@ -57,39 +57,14 @@ void Widget::advance()
 
 void Widget::drawJointSubHierarchy(int frame, std::shared_ptr<const bvh11::Joint> joint) const
 {
+    constexpr double radius = 0.5;
+    
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     
-    threedimutil::translate(joint->offset());
+    const Eigen::Matrix4d transform = bvh_.GetRelativeTransformation(joint, frame).matrix();
     
-    for (int channel_index : joint->associated_channels_indices())
-    {
-        const bvh11::Channel& channel = bvh_.channels()[channel_index];
-        const double value = bvh_.motion()(frame, channel_index);
-        switch (channel.type())
-        {
-            case bvh11::Channel::Type::x_position:
-                threedimutil::translate(Eigen::Vector3d(value, 0.0, 0.0));
-                break;
-            case bvh11::Channel::Type::y_position:
-                threedimutil::translate(Eigen::Vector3d(0.0, value, 0.0));
-                break;
-            case bvh11::Channel::Type::z_position:
-                threedimutil::translate(Eigen::Vector3d(0.0, 0.0, value));
-                break;
-            case bvh11::Channel::Type::x_rotation:
-                threedimutil::rotate(value, Eigen::Vector3d(1.0, 0.0, 0.0));
-                break;
-            case bvh11::Channel::Type::y_rotation:
-                threedimutil::rotate(value, Eigen::Vector3d(0.0, 1.0, 0.0));
-                break;
-            case bvh11::Channel::Type::z_rotation:
-                threedimutil::rotate(value, Eigen::Vector3d(0.0, 0.0, 1.0));
-                break;
-        }
-    }
-    
-    constexpr double radius = 0.5;
+    threedimutil::mult_matrix(transform);
     
     threedimutil::draw_sphere(radius, Eigen::Vector3d::Zero());
     

@@ -8,6 +8,7 @@
 #include <iostream>
 #include <cassert>
 #include <Eigen/Core>
+#include <Eigen/Geometry>
 #include "Joint.hpp"
 #include "Channel.hpp"
 #include "internal_functions.hpp"
@@ -43,6 +44,45 @@ namespace bvh11
             return joint_list;
         }
         
+        Eigen::Affine3d GetRelativeTransformation(std::shared_ptr<const Joint> joint, int frame) const
+        {
+            Eigen::Affine3d transform = Eigen::Affine3d::Identity();
+            
+            // Apply intrinsic offset translation
+            transform *= Eigen::Translation3d(joint->offset());
+            
+            // Apply time-varying transformations
+            for (int channel_index : joint->associated_channels_indices())
+            {
+                const bvh11::Channel& channel = channels()[channel_index];
+                const double          value   = motion()(frame, channel_index);
+                
+                switch (channel.type())
+                {
+                    case bvh11::Channel::Type::x_position:
+                        transform *= Eigen::Translation3d(Eigen::Vector3d(value, 0.0, 0.0));
+                        break;
+                    case bvh11::Channel::Type::y_position:
+                        transform *= Eigen::Translation3d(Eigen::Vector3d(0.0, value, 0.0));
+                        break;
+                    case bvh11::Channel::Type::z_position:
+                        transform *= Eigen::Translation3d(Eigen::Vector3d(0.0, 0.0, value));
+                        break;
+                    case bvh11::Channel::Type::x_rotation:
+                        transform *= Eigen::AngleAxisd(value * M_PI / 180.0, Eigen::Vector3d::UnitX());
+                        break;
+                    case bvh11::Channel::Type::y_rotation:
+                        transform *= Eigen::AngleAxisd(value * M_PI / 180.0, Eigen::Vector3d::UnitY());
+                        break;
+                    case bvh11::Channel::Type::z_rotation:
+                        transform *= Eigen::AngleAxisd(value * M_PI / 180.0, Eigen::Vector3d::UnitZ());
+                        break;
+                }
+            }
+            
+            return transform;
+        }
+
         void PrintJointHierarchy() const { PrintJointSubHierarchy(root_joint_, 0); }
         
     private:
