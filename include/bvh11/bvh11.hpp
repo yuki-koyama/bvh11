@@ -44,7 +44,7 @@ namespace bvh11
             return joint_list;
         }
         
-        Eigen::Affine3d GetRelativeTransformation(std::shared_ptr<const Joint> joint, int frame) const
+        Eigen::Affine3d GetTransformationRelativeToParent(std::shared_ptr<const Joint> joint, int frame) const
         {
             Eigen::Affine3d transform = Eigen::Affine3d::Identity();
             

@@ -62,7 +62,7 @@ void Widget::drawJointSubHierarchy(int frame, std::shared_ptr<const bvh11::Joint
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     
-    const Eigen::Matrix4d transform = bvh_.GetRelativeTransformation(joint, frame).matrix();
+    const Eigen::Matrix4d transform = bvh_.GetTransformationRelativeToParent(joint, frame).matrix();
     
     threedimutil::mult_matrix(transform);
     
