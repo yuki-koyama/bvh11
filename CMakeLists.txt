@@ -2,20 +2,20 @@ cmake_minimum_required(VERSION 3.1)
 project(bvh11 CXX)
 set(CMAKE_CXX_STANDARD 11)
 
+find_package(Eigen3)
+
 file(GLOB HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/bvh11/*.hpp)
 
 add_library(bvh11 INTERFACE)
 target_sources(bvh11 INTERFACE ${HEADERS})
 target_include_directories(bvh11 INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+target_link_libraries(bvh11 INTERFACE Eigen3::Eigen)
 
 install(FILES ${HEADERS} DESTINATION include/bvh11)
 
 option(BVH11_BUILD_DEMOS "Build demos" OFF)
 
 if(BVH11_BUILD_DEMOS)
-	find_package(Eigen3 REQUIRED)
-	include_directories(${EIGEN3_INCLUDE_DIR})
-
 	set(RESOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/sample.bvh)
 	file(COPY ${RESOURCE_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
