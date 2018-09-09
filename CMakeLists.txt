@@ -16,8 +16,7 @@ install(FILES ${HEADERS} DESTINATION include/bvh11)
 option(BVH11_BUILD_DEMOS "Build demos" OFF)
 
 if(BVH11_BUILD_DEMOS)
-	set(RESOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/sample.bvh)
-	file(COPY ${RESOURCE_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+	file(GLOB RESOURCE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/resources/*.bvh)
 
 	set(THREEDIMUTIL_BUILD_DEMOS OFF CACHE INTERNAL "" FORCE)
 	add_subdirectory(external/three-dim-util)

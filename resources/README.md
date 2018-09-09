@@ -1,4 +1,14 @@
-This motion capture data is licensed by mocapdata.com, Eyes, JAPAN Co. Ltd. under the Creative Commons Attribution 2.1 Japan License. To view a copy of this license, contact mocapdata.com, Eyes, JAPAN Co. Ltd. or visit <http://creativecommons.org/licenses/by/2.1/jp/>.
+# Motion Capture Data
 
-<http://mocapdata.com/>
-(C) Copyright Eyes, JAPAN Co. Ltd. 2008-2009.
+- <http://mocap.cs.cmu.edu/>
+- <https://sites.google.com/a/cgspeed.com/cgspeed/motion-capture/3dsmax-friendly-release-of-cmu-motion-database>
+
+These files are from `cmuconvert-max-136-140`.
+
+```
+Subject #131 (Michael Jackson Styled Motions)
+
+131_01	Start Walk Stop
+131_02	Start Walk Stop
+131_03	Start Hop Stop
+```
