@@ -97,6 +97,11 @@ namespace bvh11
             return transform;
         }
         
+        Eigen::Affine3d GetRootTransformation(int frame) const
+        {
+            return GetTransformation(root_joint_, frame);
+        }
+        
         void PrintJointHierarchy() const { PrintJointSubHierarchy(root_joint_, 0); }
         
     private:
