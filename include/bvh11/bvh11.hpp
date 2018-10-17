@@ -104,6 +104,26 @@ namespace bvh11
         
         void PrintJointHierarchy() const { PrintJointSubHierarchy(root_joint_, 0); }
         
+        void WriteBvhFile(const std::string& file_path) const
+        {
+            // Eigen format
+            const Eigen::IOFormat motion_format(Eigen::StreamPrecision, Eigen::DontAlignCols, " ", "", "", "\n", "", "");
+            
+            // Open the input file
+            std::ofstream ofs(file_path);
+            assert(ofs.is_open() && "Failed to open the output file.");
+            
+            // Hierarch
+            ofs << "HIERARCHY" << "\n";
+            WriteJointSubHierarchy(ofs, root_joint_, 0);
+            
+            // Motion
+            ofs << "MOTION" << "\n";
+            ofs << "Frames: " << frames_ << "\n";
+            ofs << "Frame Time: " << frame_time_ << "\n";
+            ofs << motion_.format(motion_format);
+        }
+        
     private:
         int                    frames_;
         double                 frame_time_;
@@ -276,6 +296,59 @@ namespace bvh11
             std::cout << joint->name() << std::endl;
             
             for (auto child : joint->children()) { PrintJointSubHierarchy(child, depth + 1); }
+        }
+        
+        void WriteJointSubHierarchy(std::ofstream& ofs, std::shared_ptr<const Joint> joint, int depth) const
+        {
+            auto indent_creation = [](int depth) -> std::string
+            {
+                std::string tabs = "";
+                for (int i = 0; i < depth; ++ i) { tabs += "\t"; }
+                return tabs;
+            };
+            
+            ofs << indent_creation(depth);
+            ofs << (joint->parent() == nullptr ? "ROOT" : "JOINT");
+            ofs << " " << joint->name() << "\n";
+            
+            ofs << indent_creation(depth);
+            ofs << "{" << "\n";
+            
+            ofs << indent_creation(depth + 1);
+            ofs << "OFFSET" << " ";
+            ofs << joint->offset()(0) << " " << joint->offset()(1) << " " << joint->offset()(2);
+            ofs << "\n";
+            
+            const auto associated_channels_indices = joint->associated_channels_indices();
+            ofs << indent_creation(depth + 1);
+            ofs << "CHANNELS" << " " << associated_channels_indices.size();
+            for (auto i : associated_channels_indices)
+            {
+                ofs << " " << channels()[i].type();
+            }
+            ofs << "\n";
+            
+            if (joint->has_end_site())
+            {
+                ofs << indent_creation(depth + 1);
+                ofs << "End Site" << "\n";
+                ofs << indent_creation(depth + 1);
+                ofs << "{" << "\n";
+                ofs << indent_creation(depth + 2);
+                ofs << "OFFSET" << " ";
+                ofs << joint->end_site()(0) << " " << joint->end_site()(1) << " " << joint->end_site()(2);
+                ofs << "\n";
+                ofs << indent_creation(depth + 1);
+                ofs << "}" << "\n";
+            }
+            
+            for (auto child : joint->children())
+            {
+                WriteJointSubHierarchy(ofs, child, depth + 1);
+            }
+            
+            ofs << indent_creation(depth);
+            ofs << "}" << "\n";
         }
     };
 }

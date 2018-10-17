@@ -2,6 +2,7 @@
 #define CHANNEL_HPP_
 
 #include <memory>
+#include <iostream>
 
 namespace bvh11
 {
@@ -25,6 +26,31 @@ namespace bvh11
         const Type type_;
         const std::shared_ptr<Joint> target_joint_;
     };
+    
+    inline std::ostream& operator<<(std::ostream& os, const Channel::Type& type)
+    {
+        switch (type) {
+            case Channel::Type::x_position:
+                os << "Xposition";
+                break;
+            case Channel::Type::y_position:
+                os << "Yposition";
+                break;
+            case Channel::Type::z_position:
+                os << "Zposition";
+                break;
+            case Channel::Type::x_rotation:
+                os << "Xrotation";
+                break;
+            case Channel::Type::y_rotation:
+                os << "Yrotation";
+                break;
+            case Channel::Type::z_rotation:
+                os << "Zrotation";
+                break;
+        }
+        return os;
+    }
 }
 
 #endif
