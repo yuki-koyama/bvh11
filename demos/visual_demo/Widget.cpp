@@ -1,7 +1,6 @@
 #include "Widget.hpp"
 #include <three-dim-util/gl-wrapper.hpp>
 #include <three-dim-util/draw-functions.hpp>
-#include <igl/opengl2/draw_floor.h>
 
 Widget::Widget(const bvh11::BvhObject& bvh, QWidget *parent) :
 threedimutil::TrackballWidget(parent),
@@ -34,10 +33,8 @@ void Widget::paintGL()
     
     glLightfv(GL_LIGHT0, GL_POSITION, std::vector<GLfloat>{ + 1.0, 2.0, + 3.0, 0.0 }.data());
     
-    glPushMatrix();
-    glScaled(5.0, 1.0, 5.0);
-    igl::opengl2::draw_floor();
-    glPopMatrix();
+    glColor3d(0.8, 0.8, 0.8);
+    threedimutil::draw_cube(Eigen::Vector3d(0.0, - 0.5, 0.0), 100.0, 1.0, 100.0);
     
     glColor3d(0.7, 0.2, 0.2);
     drawJointSubHierarchy(frame_, bvh_.root_joint());
