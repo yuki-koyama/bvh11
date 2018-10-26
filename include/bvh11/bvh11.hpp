@@ -31,7 +31,7 @@ namespace bvh11
         
         std::shared_ptr<const Joint> root_joint() const { return root_joint_; }
         
-        // This method returns a list of joints always in the same order
+        /// This method returns a list of joints always in the same order
         std::vector<std::shared_ptr<const Joint>> GetJointList() const
         {
             std::vector<std::shared_ptr<const Joint>> joint_list;
@@ -44,8 +44,11 @@ namespace bvh11
             return joint_list;
         }
         
+        /// \param frame Frame. This value must be between 0 and frames() - 1.
         Eigen::Affine3d GetTransformationRelativeToParent(std::shared_ptr<const Joint> joint, int frame) const
         {
+            assert(frame < frames() && "Invalid frame is specified.");
+            
             Eigen::Affine3d transform = Eigen::Affine3d::Identity();
             
             // Apply intrinsic offset translation
@@ -83,6 +86,7 @@ namespace bvh11
             return transform;
         }
         
+        /// \param frame Frame. This value must be between 0 and frames() - 1.
         Eigen::Affine3d GetTransformation(std::shared_ptr<const Joint> joint, int frame) const
         {
             Eigen::Affine3d transform = GetTransformationRelativeToParent(joint, frame);
@@ -97,6 +101,7 @@ namespace bvh11
             return transform;
         }
         
+        /// \param frame Frame. This value must be between 0 and frames() - 1.
         Eigen::Affine3d GetRootTransformation(int frame) const
         {
             return GetTransformation(root_joint_, frame);
