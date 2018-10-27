@@ -13,7 +13,14 @@ A tiny C++11 library for reading BVH motion capture data.
 
 ## Usage
 
-bvh11 is a header-only library. It can be used by copying the `.hpp` files to an include directory.
+```
+git clone https://github.com/yuki-koyama/bvh11.git --recursive
+mkdir build
+cd build
+cmake ../bvh11
+make
+make install
+```
 
 ## License
 
