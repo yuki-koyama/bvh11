@@ -1,5 +1,5 @@
 #include <iostream>
-#include <bvh11/bvh11.hpp>
+#include <bvh11.hpp>
 
 int main(int argc, char* argv[])
 {
