@@ -11,7 +11,7 @@
 
 namespace bvh11
 {
-    class Channel;
+    struct Channel;
     class Joint;
     
     class BvhObject
@@ -30,7 +30,8 @@ namespace bvh11
         
         std::shared_ptr<const Joint> root_joint() const { return root_joint_; }
         
-        /// This method returns a list of joints always in the same order
+        /// \brief Return a list of all the joints.
+        /// \return List of the joints sorted always in the same order
         std::vector<std::shared_ptr<const Joint>> GetJointList() const;
         
         /// \param frame Frame. This value must be between 0 and frames() - 1.
@@ -65,23 +66,16 @@ namespace bvh11
         void WriteJointSubHierarchy(std::ofstream& ofs, std::shared_ptr<const Joint> joint, int depth) const;
     };
     
-    class Channel
+    struct Channel
     {
-    public:
         enum class Type
         {
             x_position, y_position, z_position,
             z_rotation, x_rotation, y_rotation
         };
         
-        Channel(Type type, std::shared_ptr<Joint> target_joint) : type_(type), target_joint_(target_joint) {}
-        
-        const Type& type() const { return type_; }
-        std::shared_ptr<Joint> target_joint() const { return target_joint_; }
-        
-    private:
-        const Type type_;
-        const std::shared_ptr<Joint> target_joint_;
+        const Type type;
+        const std::shared_ptr<Joint> target_joint;
     };
     
     std::ostream& operator<<(std::ostream& os, const Channel::Type& type);

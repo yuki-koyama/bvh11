@@ -66,7 +66,7 @@ namespace bvh11
             const bvh11::Channel& channel = channels()[channel_index];
             const double          value   = motion()(frame, channel_index);
             
-            switch (channel.type())
+            switch (channel.type)
             {
                 case bvh11::Channel::Type::x_position:
                     transform *= Eigen::Translation3d(Eigen::Vector3d(value, 0.0, 0.0));
@@ -188,7 +188,7 @@ namespace bvh11
                             return Channel::Type();
                         }(tokens[i + 2]);
                         
-                        channels_.push_back(Channel(type, target_joint));
+                        channels_.push_back(Channel{ type, target_joint });
                         
                         const int channel_index = channels_.size() - 1;
                         target_joint->AssociateChannel(channel_index);
@@ -297,7 +297,7 @@ namespace bvh11
         ofs << "CHANNELS" << " " << associated_channels_indices.size();
         for (auto i : associated_channels_indices)
         {
-            ofs << " " << channels()[i].type();
+            ofs << " " << channels()[i].type;
         }
         ofs << "\n";
         
