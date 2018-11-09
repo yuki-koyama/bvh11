@@ -2,7 +2,7 @@
 #define WIDGET_HPP_
 
 #include <chrono>
-#include <bvh11/bvh11.hpp>
+#include <bvh11.hpp>
 #include <three-dim-util/trackball-widget.hpp>
 #include <QTimer>
 
