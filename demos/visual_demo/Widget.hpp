@@ -3,7 +3,7 @@
 
 #include <chrono>
 #include <bvh11.hpp>
-#include <three-dim-util/trackball-widget.hpp>
+#include <three-dim-util/widgets/trackball-widget.hpp>
 #include <QTimer>
 
 class Widget : public threedimutil::TrackballWidget

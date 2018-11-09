@@ -1,6 +1,6 @@
 #include "Widget.hpp"
-#include <three-dim-util/gl-wrapper.hpp>
-#include <three-dim-util/draw-functions.hpp>
+#include <three-dim-util/opengl2/gl-wrappers.hpp>
+#include <three-dim-util/opengl2/draw-functions.hpp>
 
 Widget::Widget(const bvh11::BvhObject& bvh, QWidget *parent) :
 threedimutil::TrackballWidget(parent),
