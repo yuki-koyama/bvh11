@@ -16,12 +16,12 @@ A tiny C++11 library for reading BVH motion capture data.
 ### Build and Install
 
 ```
-git clone https://github.com/yuki-koyama/bvh11.git --recursive
-mkdir build
-cd build
-cmake ../bvh11
-make
-make install
+$ git clone https://github.com/yuki-koyama/bvh11.git --recursive
+$ mkdir build
+$ cd build
+$ cmake ../bvh11
+$ make
+$ make install
 ```
 
 ### Import BVH
