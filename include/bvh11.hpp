@@ -17,6 +17,7 @@ namespace bvh11
     class BvhObject
     {
     public:
+        /// \param file_path Path to the input BVH file.
         BvhObject(const std::string& file_path)
         {
             ReadBvhFile(file_path);
@@ -31,7 +32,7 @@ namespace bvh11
         std::shared_ptr<const Joint> root_joint() const { return root_joint_; }
         
         /// \brief Return a list of all the joints.
-        /// \return List of the joints sorted always in the same order
+        /// \return List of the joints sorted always in the same order.
         std::vector<std::shared_ptr<const Joint>> GetJointList() const;
         
         /// \param frame Frame. This value must be between 0 and frames() - 1.
@@ -48,6 +49,7 @@ namespace bvh11
         
         void PrintJointHierarchy() const { PrintJointSubHierarchy(root_joint_, 0); }
         
+        /// \param file_path Path to the output BVH file.
         void WriteBvhFile(const std::string& file_path) const;
         
     private:
