@@ -190,7 +190,7 @@ namespace bvh11
                         
                         channels_.push_back(Channel{ type, target_joint });
                         
-                        const int channel_index = channels_.size() - 1;
+                        const int channel_index = static_cast<int>(channels_.size() - 1);
                         target_joint->AssociateChannel(channel_index);
                     }
                 }
