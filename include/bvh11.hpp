@@ -52,6 +52,14 @@ namespace bvh11
         /// \param file_path Path to the output BVH file.
         void WriteBvhFile(const std::string& file_path) const;
         
+        /// \brief Change the number of the frames.
+        /// \details When the specified number is larger than the current number, it adds new frames at the end
+        ///          that are uninitialized. When the specified number is smaller than the current frame,
+        ///          it deletes the last frames. When the specified number is the same as the current number,
+        ///          it does not change anything.
+        /// \param num_new_frames Number of the new frames.
+        void ResizeFrames(int num_new_frames);
+        
     private:
         int                  frames_;
         double               frame_time_;

@@ -344,6 +344,15 @@ namespace bvh11
         ofs << motion_.format(motion_format);
     }
     
+    void BvhObject::ResizeFrames(int num_new_frames)
+    {
+        assert(num_new_frames >= 0 && "Received an invalid frame number.");
+        
+        motion_.conservativeResize(num_new_frames, Eigen::NoChange);
+        frames_ = num_new_frames;
+        return;
+    }
+    
     std::ostream& operator<<(std::ostream& os, const Channel::Type& type)
     {
         switch (type) {
