@@ -6,12 +6,12 @@ Widget::Widget(const bvh11::BvhObject& bvh, QWidget *parent) :
 threedimutil::TrackballWidget(parent),
 bvh_(bvh)
 {
-    camera().position() = Eigen::Vector3d(50.0, 10.0, 80.0);
-    camera().target()   = Eigen::Vector3d( 0.0, 20.0,  0.0);
-    camera().up()       = Eigen::Vector3d( 0.0,  1.0,  0.0);
+    camera().position() = Eigen::Vector3d(0.0, 0.8, 4.0);
+    camera().target()   = Eigen::Vector3d(0.0, 0.8, 0.0);
+    camera().up()       = Eigen::Vector3d(0.0, 1.0, 0.0);
     
     near_clip() = 1.0;
-    far_clip()  = 500.0;
+    far_clip()  = 100.0;
     
     time_point_ = std::chrono::steady_clock::now();
     
@@ -33,7 +33,7 @@ void Widget::paintGL()
     
     glLightfv(GL_LIGHT0, GL_POSITION, std::vector<GLfloat>{ + 1.0, 2.0, + 3.0, 0.0 }.data());
     
-    threedimutil::draw_floor();
+    threedimutil::draw_floor(10.0, 10);
     
     glColor3d(0.7, 0.2, 0.2);
     drawJointSubHierarchy(frame_, bvh_.root_joint());
@@ -53,7 +53,7 @@ void Widget::advance()
 
 void Widget::drawJointSubHierarchy(int frame, std::shared_ptr<const bvh11::Joint> joint) const
 {
-    constexpr double radius = 0.5;
+    constexpr double radius = 0.025;
     
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();

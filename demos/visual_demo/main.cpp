@@ -10,8 +10,8 @@ int main(int argc, char* argv[])
         std::cerr << "Usage: visual_demo [BVH_PATH]" << std::endl;
         std::cout << "Loading a default BVH file..." << std::endl;
     }
-
-    const std::string bvh_file_path = (argc >= 2) ? argv[1] : "131_03.bvh";
+    
+    const std::string bvh_file_path = (argc >= 2) ? argv[1] : "scaled_131_03.bvh";
     
     // Instantiate a BVH object
     bvh11::BvhObject bvh(bvh_file_path);
