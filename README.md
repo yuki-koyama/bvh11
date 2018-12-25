@@ -2,6 +2,8 @@
 
 A tiny C++11 library for reading BVH motion capture data.
 
+![](./docs/sample.gif)
+
 ## Dependencies
 
 - C++11 standard library
