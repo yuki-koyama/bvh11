@@ -37,6 +37,13 @@ void Widget::paintGL()
     
     glColor3d(0.7, 0.2, 0.2);
     drawJointSubHierarchy(frame_, bvh_.root_joint());
+    
+    // Draw pseudo-shadow
+    glPushMatrix();
+    glScaled(1.0, 0.01, 1.0);
+    glColor3d(0.2, 0.2, 0.2);
+    drawJointSubHierarchy(frame_, bvh_.root_joint());
+    glPopMatrix();
 }
 
 void Widget::advance()
