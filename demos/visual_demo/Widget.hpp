@@ -3,7 +3,7 @@
 
 #include <chrono>
 #include <bvh11.hpp>
-#include <three-dim-util/widgets/trackball-widget.hpp>
+#include <three-dim-util/opengl2/widgets/trackball-widget.hpp>
 #include <QTimer>
 
 class Widget : public threedimutil::TrackballWidget
@@ -25,7 +25,7 @@ private:
     int frame_ = 0;
     std::shared_ptr<QTimer> timer_;
     
-    void drawJointSubHierarchy(int frame, std::shared_ptr<const bvh11::Joint> joint) const;
+    void drawJointSubHierarchy(int frame, std::shared_ptr<const bvh11::Joint> joint);
 };
 
 #endif

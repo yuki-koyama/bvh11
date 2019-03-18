@@ -22,28 +22,28 @@ bvh_(bvh)
 
 void Widget::paintGL()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    this->glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
     setProjectionMatrix();
     setModelViewMatrix();
     
-    glEnable(GL_COLOR_MATERIAL);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
+    this->glEnable(GL_COLOR_MATERIAL);
+    this->glEnable(GL_LIGHTING);
+    this->glEnable(GL_LIGHT0);
     
-    glLightfv(GL_LIGHT0, GL_POSITION, std::vector<GLfloat>{ + 1.0, 2.0, + 3.0, 0.0 }.data());
+    this->glLightfv(GL_LIGHT0, GL_POSITION, std::vector<GLfloat>{ + 1.0, 2.0, + 3.0, 0.0 }.data());
     
     threedimutil::draw_floor(10.0, 10);
     
-    glColor3d(0.7, 0.2, 0.2);
+    this->glColor3d(0.7, 0.2, 0.2);
     drawJointSubHierarchy(frame_, bvh_.root_joint());
     
     // Draw pseudo-shadow
-    glPushMatrix();
-    glScaled(1.0, 0.01, 1.0);
-    glColor3d(0.2, 0.2, 0.2);
+    this->glPushMatrix();
+    this->glScaled(1.0, 0.01, 1.0);
+    this->glColor3d(0.2, 0.2, 0.2);
     drawJointSubHierarchy(frame_, bvh_.root_joint());
-    glPopMatrix();
+    this->glPopMatrix();
 }
 
 void Widget::advance()
@@ -58,12 +58,12 @@ void Widget::advance()
     update();
 }
 
-void Widget::drawJointSubHierarchy(int frame, std::shared_ptr<const bvh11::Joint> joint) const
+void Widget::drawJointSubHierarchy(int frame, std::shared_ptr<const bvh11::Joint> joint)
 {
     constexpr double radius = 0.025;
     
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
+    this->glMatrixMode(GL_MODELVIEW);
+    this->glPushMatrix();
     
     const Eigen::Matrix4d transform = bvh_.GetTransformationRelativeToParent(joint, frame).matrix();
     
@@ -84,5 +84,5 @@ void Widget::drawJointSubHierarchy(int frame, std::shared_ptr<const bvh11::Joint
         threedimutil::draw_sphere(radius, joint->end_site());
     }
     
-    glPopMatrix();
+    this->glPopMatrix();
 }
