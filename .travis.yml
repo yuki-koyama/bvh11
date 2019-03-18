@@ -1,0 +1,30 @@
+language: cpp
+compiler:
+- clang
+- gcc
+os:
+- linux
+- osx
+dist: xenial
+addons:
+  homebrew:
+    packages:
+    - cmake
+    - eigen
+    - glm
+    - qt
+  apt:
+    packages:
+    - cmake
+    - libeigen3-dev
+    - qt5-default
+before_script:
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clone https://github.com/g-truc/glm.git; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir build-glm; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd build-glm; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cmake -DGLM_DISABLE_AUTO_DETECTION=OFF -DGLM_QUIET=ON -DGLM_TEST_ENABLE=OFF -DGLM_TEST_ENABLE_CXX_11=OFF -DGLM_TEST_ENABLE_CXX_14=OFF -DGLM_TEST_ENABLE_CXX_17=OFF -DGLM_TEST_ENABLE_CXX_20=OFF -DGLM_TEST_ENABLE_CXX_98=OFF -DGLM_TEST_ENABLE_FAST_MATH=OFF -DGLM_TEST_ENABLE_LANG_EXTENSION=OFF -DGLM_TEST_ENABLE_SIMD_AVX=OFF -DGLM_TEST_ENABLE_SIMD_AVX2=OFF -DGLM_TEST_ENABLE_SIMD_SSE2=OFF -DGLM_TEST_ENABLE_SIMD_SSE3=OFF -DGLM_TEST_ENABLE_SIMD_SSE4_1=OFF -DGLM_TEST_ENABLE_SIMD_SSE4_2=OFF -DGLM_TEST_ENABLE_SIMD_SSSE3=OFF -DGLM_TEST_FORCE_PURE=OFF ../glm; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make && sudo make install; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -rf glm build-glm; fi
+script:
+- cmake -DBVH11_BUILD_DEMOS=ON . && make
