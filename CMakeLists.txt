@@ -28,5 +28,5 @@ endif()
 
 enable_testing()
 if(BVH11_BUILD_DEMOS)
-	add_test(NAME simple_demo COMMAND $<TARGET_FILE:simple_demo>)
+	add_test(NAME simple_demo COMMAND $<TARGET_FILE:simple_demo> ${CMAKE_CURRENT_SOURCE_DIR}/resources/131_03.bvh)
 endif()
