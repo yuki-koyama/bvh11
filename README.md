@@ -7,11 +7,14 @@ A tiny C++11 library for reading BVH motion capture data.
 ## Dependencies
 
 - C++11 standard library
-- Eigen <http://eigen.tuxfamily.org/>
+- Eigen 3 <http://eigen.tuxfamily.org/> (`brew install eigen`)
 
 ### Additional Dependencies for Demos
 
 - three-dim-util <https://github.com/yuki-koyama/three-dim-util/>
+  - Eigen 3 (`brew install eigen`)
+  - Qt 5 (`brew install qt`)
+  - GLM (`brew install glm`)
 
 ## Usage
 
@@ -34,9 +37,9 @@ $ make install
 int main()
 {
   bvh11::BvhObject("/path/to/bvh/data.bvh");
-  
+
   // Do something
-  
+
   return 0;
 }
 ```
