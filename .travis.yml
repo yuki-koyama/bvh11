@@ -28,3 +28,5 @@ before_script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -rf glm build-glm; fi
 script:
 - cmake -DBVH11_BUILD_DEMOS=ON . && make
+after_script:
+- make test

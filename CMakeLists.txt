@@ -25,3 +25,8 @@ if(BVH11_BUILD_DEMOS)
 	add_subdirectory(demos/simple_demo)
 	add_subdirectory(demos/visual_demo)
 endif()
+
+enable_testing()
+if(BVH11_BUILD_DEMOS)
+	add_test(NAME simple_demo COMMAND $<TARGET_FILE:simple_demo>)
+endif()
