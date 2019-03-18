@@ -1,5 +1,7 @@
 # bvh11
 
+[![Build Status](https://travis-ci.com/yuki-koyama/bvh11.svg?branch=master)](https://travis-ci.com/yuki-koyama/bvh11)
+
 A tiny C++11 library for reading BVH motion capture data.
 
 ![](./docs/sample.gif)
