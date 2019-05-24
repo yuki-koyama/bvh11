@@ -18,9 +18,9 @@ namespace bvh11
     {
     public:
         /// \param file_path Path to the input BVH file.
-        BvhObject(const std::string& file_path)
+        BvhObject(const std::string& file_path, const double scale = 1.0)
         {
-            ReadBvhFile(file_path);
+            ReadBvhFile(file_path, scale);
         }
         
         int    frames()     const { return frames_;     }
@@ -69,7 +69,7 @@ namespace bvh11
         
         std::shared_ptr<const Joint> root_joint_;
         
-        void ReadBvhFile(const std::string& file_path);
+        void ReadBvhFile(const std::string& file_path, const double scale = 1.0);
         
         void PrintJointSubHierarchy(std::shared_ptr<const Joint> joint, int depth) const;
         

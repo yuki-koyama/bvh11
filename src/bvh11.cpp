@@ -139,7 +139,7 @@ namespace bvh11
         return transform;
     }
     
-    void BvhObject::ReadBvhFile(const std::string& file_path)
+    void BvhObject::ReadBvhFile(const std::string& file_path, const double scale)
     {
         // Open the input file
         std::ifstream ifs(file_path);
@@ -196,7 +196,7 @@ namespace bvh11
                 {
                     assert(tokens.size() == 4);
                     const std::shared_ptr<Joint> current_joint = stack.back();
-                    current_joint->offset() = internal::read_offset(tokens);
+                    current_joint->offset() = scale * internal::read_offset(tokens);
                 }
                 // Read a channel list
                 else if (tokens[0] == "CHANNELS")
@@ -242,7 +242,7 @@ namespace bvh11
                     
                     // Read the next line, which should state an offset
                     const std::vector<std::string> tokens_offset = internal::tokenize_next_line(ifs);
-                    current_joint->end_site() = internal::read_offset(tokens_offset);
+                    current_joint->end_site() = scale * internal::read_offset(tokens_offset);
                     
                     // Read the next line, which should be "{"
                     const std::vector<std::string> tokens_end_block = internal::tokenize_next_line(ifs);
@@ -291,6 +291,16 @@ namespace bvh11
                 for (int channel_index = 0; channel_index < channels_.size(); ++ channel_index)
                 {
                     motion_(frame_index, channel_index) = std::stod(tokens[channel_index]);
+                }
+            }
+
+            // Scale translations
+            for (int channel_index = 0; channel_index < channels_.size(); ++ channel_index)
+            {
+                const Channel::Type& type = channels_[channel_index].type;
+                if (type == Channel::Type::x_position || type == Channel::Type::y_position || type == Channel::Type::z_position)
+                {
+                    motion_.col(channel_index) = scale * motion_.col(channel_index);
                 }
             }
         }();
