@@ -1,23 +1,26 @@
 language: cpp
-compiler:
-- clang
-- gcc
-os:
-- linux
-- osx
+
+matrix:
+  include:
+    - compiler: gcc
+      os: linux
+    - compiler: clang
+      os: osx
+
 dist: xenial
+
 addons:
   homebrew:
+    update: true
     packages:
-    - cmake
     - eigen
     - glm
     - qt
   apt:
     packages:
-    - cmake
     - libeigen3-dev
     - qt5-default
+
 before_script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then git clone https://github.com/g-truc/glm.git; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then mkdir build-glm; fi
@@ -26,7 +29,9 @@ before_script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then make && sudo make install; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then cd ..; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then rm -rf glm build-glm; fi
+
 script:
 - cmake -DBVH11_BUILD_DEMOS=ON . && make
+
 after_script:
 - make test
