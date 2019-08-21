@@ -17,7 +17,6 @@ A tiny C++11 library for reading (and writing) BVH motion capture data.
 - three-dim-util <https://github.com/yuki-koyama/three-dim-util/>
   - Eigen 3 (`brew install eigen`)
   - Qt 5 (`brew install qt`)
-  - GLM (`brew install glm`)
 
 ## Usage
 
