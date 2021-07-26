@@ -31,16 +31,20 @@ make
 make install
 ```
 
-### Import BVH
+### Import (and Export) BVH Data
 
 ```cpp
 #include <bvh11.hpp>
 
 int main()
 {
-  bvh11::BvhObject("/path/to/bvh/data.bvh");
+  // Import data
+  auto bvh_object = bvh11::BvhObject("/path/to/bvh/data.bvh");
 
-  // Do something
+  // Do something (e.g., render the motion data, apply some processing, etc.)
+  
+  // Export data (if necessary)
+  bvh_object.WriteBvhFile("/path/to/bvh/new_data.bvh");
 
   return 0;
 }
