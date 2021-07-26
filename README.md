@@ -1,6 +1,7 @@
 # bvh11
 
-[![Build Status](https://travis-ci.com/yuki-koyama/bvh11.svg?branch=master)](https://travis-ci.com/yuki-koyama/bvh11)
+[![macOS](https://github.com/yuki-koyama/bvh11/actions/workflows/macos.yml/badge.svg)](https://github.com/yuki-koyama/bvh11/actions/workflows/macos.yml)
+[![Ubuntu](https://github.com/yuki-koyama/bvh11/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/yuki-koyama/bvh11/actions/workflows/ubuntu.yml)
 ![GitHub](https://img.shields.io/github/license/yuki-koyama/bvh11)
 
 A tiny C++11 library for reading (and writing) BVH motion capture data.
